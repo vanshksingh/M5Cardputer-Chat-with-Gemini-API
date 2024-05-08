@@ -1,0 +1,4 @@
+SSID=your_SSID
+PASSWORD=your_pass
+API_KEY=your_key
+
