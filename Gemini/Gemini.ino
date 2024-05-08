@@ -61,6 +61,7 @@
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
+#include <FastLED.h>
 
 
 #define SD_SCK  GPIO_NUM_40
@@ -68,6 +69,13 @@
 #define SD_MOSI GPIO_NUM_14
 #define SD_SS   GPIO_NUM_12
 #define SD_SPI_FREQ 1000000
+
+#define PIN_LED    21
+    #define NUM_LEDS   1
+ CRGB leds[NUM_LEDS];
+    uint8_t led_ih             = 0;
+    uint8_t led_status         = 0;
+    
 
 SPIClass hspi = SPIClass(HSPI);
 
@@ -87,32 +95,53 @@ void setup() {
     // Initialize M5Cardputer
     M5Cardputer.begin();
 
+    FastLED.addLeds<WS2812, PIN_LED, GRB>(leds, NUM_LEDS);
+
+    leds[0] = CRGB::Cyan;
+    FastLED.show();
+
     // Set display rotation and text size
     M5Cardputer.Display.setRotation(1);
-    M5Cardputer.Display.setTextSize(2);
+    M5Cardputer.Display.setTextSize(0.1);
+    M5Cardputer.Display.println("/n ");
+    M5Cardputer.Display.setTextSize(1.4);
+    M5Cardputer.Display.setTextFont(&fonts::Orbitron_Light_24);
 
     // Clear the display
     M5Cardputer.Display.fillScreen(BLACK);
     M5Cardputer.Display.setTextColor(CYAN);
-    M5Cardputer.Display.println("Gemini_Pocket_Chat");
+    M5Cardputer.Display.println("      Gemini");
+    M5Cardputer.Display.setTextSize(0.7);
+    M5Cardputer.Display.setTextFont(&fonts::Yellowtail_32);
     M5Cardputer.Display.setTextColor(ORANGE);
-    M5Cardputer.Display.println("By- @vanshksingh");
+    M5Cardputer.Display.println("                 Remixed!");
+    M5Cardputer.Display.setTextSize(0.5);
+    M5Cardputer.Display.setTextFont(&fonts::Yellowtail_32);
+    M5Cardputer.Display.setTextColor(BLUE);
+    M5Cardputer.Display.println("                     @vanshksingh");
 
-    delay(1000);
-    M5Cardputer.Display.setTextSize(1.5);
+    delay(2000);
+    M5Cardputer.Display.setTextSize(0.9);
     M5Cardputer.Display.fillScreen(BLACK);
+    M5Cardputer.Display.setTextFont(&fonts::FreeMono9pt7b);
 
     hspi.begin(SD_SCK, SD_MISO, SD_MOSI, SD_SS);
 
     // Initialize the SD card using the specified chip select pin
     if (!SD.begin(SD_SS, hspi, SD_SPI_FREQ)) {
+      leds[0] = CRGB::Red;
+    FastLED.show();
         M5Cardputer.Display.setTextColor(RED);
-        M5Cardputer.Display.println("SD Card Initialization Failed!");
+        M5Cardputer.Display.setCursor(2, 0);
+        M5Cardputer.Display.println(" SD Card Init Failed!");
         delay(2000);
         ESP.restart();
     } else {
+      leds[0] = CRGB::Gold;
+    FastLED.show();
         M5Cardputer.Display.setTextColor(YELLOW);
-        M5Cardputer.Display.println("SD Card Initialized!");
+        M5Cardputer.Display.setCursor(2, 0);
+        M5Cardputer.Display.println(" SD Card Initialized!");
         delay(1000);
 
         // Load the configuration from the config file on the SD card
@@ -120,6 +149,8 @@ void setup() {
             // Connect to Wi-Fi
             connectToWiFi();
         } else {
+          leds[0] = CRGB::Violet;
+    FastLED.show();
             M5Cardputer.Display.setTextColor(RED);
             M5Cardputer.Display.println("\nFailed to load config file.");
             delay(2000);
@@ -178,6 +209,9 @@ bool loadConfig() {
 
 // Function to connect to Wi-Fi
 void connectToWiFi() {
+  leds[0] = CRGB::Orange;
+    FastLED.show();
+    M5Cardputer.Display.fillScreen(BLACK);
     M5Cardputer.Display.setTextColor(YELLOW);
     M5Cardputer.Display.setCursor(0, 0);
     M5Cardputer.Display.println("Connecting to Wi-Fi...");
@@ -192,13 +226,17 @@ void connectToWiFi() {
         attempts++;
 
         if (attempts >= maxAttempts) {
+          
             M5Cardputer.Display.setTextColor(RED);
+            leds[0] = CRGB::Orange;
+    FastLED.show();
             M5Cardputer.Display.println("\nFailed to connect to Wi-Fi, restarting...");
             delay(2000);
             ESP.restart();
         }
     }
-
+leds[0] = CRGB::Green;
+    FastLED.show();
     M5Cardputer.Display.println("\nWi-Fi connected");
     M5Cardputer.Display.println("\nIP: " + WiFi.localIP().toString());
     delay(1000);
@@ -269,6 +307,8 @@ void displayUserInput() {
         M5Cardputer.Display.setTextColor(GREENYELLOW);
         M5Cardputer.Display.setCursor(0, bottomLineY);
         M5Cardputer.Display.print(userInput);
+      leds[0] = CRGB::SkyBlue;
+    FastLED.show();
     }
 }
 
@@ -290,8 +330,13 @@ void displayGeminiResponse() {
         canvas.setTextColor(WHITE);
         canvas.println("Response: " + geminiResponse);
         canvas.pushSprite(0, 0);
+        leds[0] = CRGB::White;
+    FastLED.show();
     } else {
+      leds[0] = CRGB::Gray;
+    FastLED.show();
         M5Cardputer.Display.print("Response: " + geminiResponse);
+        delay(1000);
     }
 }
 
@@ -303,6 +348,8 @@ void loop() {
     // Handle user input from the keyboard
     if (M5Cardputer.Keyboard.isChange()) {
         if (M5Cardputer.Keyboard.isPressed()) {
+          leds[0] = CRGB::SeaGreen;
+    FastLED.show();
             // Get the keyboard state
             Keyboard_Class::KeysState status = M5Cardputer.Keyboard.keysState();
 
@@ -314,18 +361,31 @@ void loop() {
             // Handle backspace key
             if (status.del) {
                 handleBackspace();
+                leds[0] = CRGB::IndianRed;
+    FastLED.show();
             }
 
             // Handle enter key (submit input)
             if (status.enter) {
+              leds[0] = CRGB::PaleTurquoise;
+    FastLED.show();
                 // Remove the initial prompt from the input
                 String inputWithoutPrompt = userInput.substring(2);
 
                 // Clear the display to prepare for the response
-                M5Cardputer.Display.fillScreen(BLACK);
-                M5Cardputer.Display.setTextColor(BLUE);
-                M5Cardputer.Display.setCursor(0, 0);
-                M5Cardputer.Display.println("Generating Response...");
+                M5Cardputer.Display.setTextSize(1.2);
+    M5Cardputer.Display.setTextFont(&fonts::Orbitron_Light_24);
+
+    // Clear the display
+    leds[0] = CRGB::DarkBlue;
+    FastLED.show();
+    M5Cardputer.Display.fillScreen(BLACK);
+    M5Cardputer.Display.setTextColor(BLUE);
+    M5Cardputer.Display.setCursor(0, 0);
+    M5Cardputer.Display.println("Generating");
+    M5Cardputer.Display.println("Response...");
+    M5Cardputer.Display.setTextSize(0.9);
+    M5Cardputer.Display.setTextFont(&fonts::FreeMono9pt7b);
 
                 // Send a request to the Gemini API with the user input (without prompt)
                 if (!sendGeminiRequest(inputWithoutPrompt)) {
