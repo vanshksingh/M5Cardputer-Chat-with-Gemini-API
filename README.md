@@ -1,6 +1,9 @@
 # M5Cardputer Chat with Gemini API
 
 
+![IMG_4196](https://github.com/vanshksingh/M5Cardputer-Chat-with-Gemini-API/assets/114809624/6dde1464-cba1-4e41-a0d2-7bf3ffa5e925)
+
+
 ![Screenshot 2024-05-08 at 1 50 31 PM](https://github.com/vanshksingh/M5Cardputer-Chat-with-Gemini-API/assets/114809624/e70d0950-4690-4fcb-b4b4-d8838bcdc4f1)
 
 An application that uses M5Cardputer to interact with the Gemini API for generating responses based on user input. This project includes code for managing Wi-Fi connectivity, handling user input, making API requests, and displaying responses on the M5Cardputer's screen.
