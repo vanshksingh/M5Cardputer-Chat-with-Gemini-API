@@ -34,11 +34,11 @@ M5Canvas canvas(&M5Cardputer.Display);
 // Global variables
 int scrollPosition = 0;
 int scrollPositionDOWN = 0;
-String userInput = "Double-check how you're handling spaces between words. Ensure that the width of spaces is correctly accounted for when calculating whether adding a word would exceed the display width.";                                                                                                                                                                                                                                    // Initial prompt
-String geminiResponse = "Consider if there are any boundary conditions or edge cases where the logic might not work as expected. For example, if a word itself is wider than the display width, it might not be handled correctly by the current logic. By carefully reviewing each of these aspects, you should be able to identify and address the underlying cause of why some words are still going off-screen despite the logic provided.";  // Response from Gemini model
-int retryAttempts = 5;                                                                                                                                                                                                                                                                                                                                                                                                                            // Number of retry attempts on request failure
-String inputLines[maxLines];                                                                                                                                                                                                                                                                                                                                                                                                                      // Array to hold each line of input
-int currentLineIndex = 0;                                                                                                                                                                                                                                                                                                                                                                                                                         // Index of the current line in the array
+String userInput = ""; // Initial prompt
+String geminiResponse = "";  // Response from Gemini model
+int retryAttempts = 5;         // Number of retry attempts on request failure
+String inputLines[maxLines];    // Array to hold each line of input
+int currentLineIndex = 0;    // Index of the current line in the array
 
 
 // Line height
@@ -271,10 +271,38 @@ bool initializeSDCard() {
 
   // Initialize the SD card
   if (!SD.begin(SD_SS, hspi, SD_SPI_FREQ)) {
-    printDebug("SD Card Initialization Failed!");
+    // Clear the canvas screen to display the message clearly
+  M5Cardputer.Display.pushImage(0, 0, 240, 135, sd_img);
+
+  // Set the cursor position to the top-left corner
+  M5Cardputer.Display.setCursor(0, 0);
+
+  // Set the text color to white for visibility
+  M5Cardputer.Display.setTextColor(WHITE);
+
+  // Print the provided debug message
+  M5Cardputer.Display.println("SD Card Initialization Failed!");
+
+  // Delay for visibility
+  delay(800);
+    
     return false;
   } else {
-    printDebug("SD Card Initialized Successfully!");
+    // Clear the canvas screen to display the message clearly
+  M5Cardputer.Display.pushImage(0, 0, 240, 135, sd_img);
+
+  // Set the cursor position to the top-left corner
+  M5Cardputer.Display.setCursor(0, 0);
+
+  // Set the text color to white for visibility
+  M5Cardputer.Display.setTextColor(WHITE);
+
+  // Print the provided debug message
+  M5Cardputer.Display.println("SD Card Initialized Successfully!");
+
+  // Delay for visibility
+  delay(800);
+
     return true;
   }
 }
@@ -339,10 +367,37 @@ void loadConfig() {
 
     // Close the configuration file
     configFile.close();
+// Clear the canvas screen to display the message clearly
+  M5Cardputer.Display.pushImage(0, 0, 240, 135, sd_img);
 
-    printDebug("Configuration loaded successfully.");
+  // Set the cursor position to the top-left corner
+  M5Cardputer.Display.setCursor(0, 0);
+
+  // Set the text color to white for visibility
+  M5Cardputer.Display.setTextColor(WHITE);
+
+  // Print the provided debug message
+  M5Cardputer.Display.println("Configuration loaded successfully.");
+
+  // Delay for visibility
+  delay(800);
+    
   } else {
-    printDebug("Failed to open config file for reading.");
+    // Clear the canvas screen to display the message clearly
+M5Cardputer.Display.pushImage(0, 0, 240, 135, error);
+
+  // Set the cursor position to the top-left corner
+  M5Cardputer.Display.setCursor(0, 0);
+
+  // Set the text color to white for visibility
+  M5Cardputer.Display.setTextColor(WHITE);
+
+  // Print the provided debug message
+  M5Cardputer.Display.println("Failed to open config file for reading.");
+
+  // Delay for visibility
+  delay(800);
+   
   }
 }
 
@@ -681,7 +736,7 @@ void printDebug(const String &message) {
   M5Cardputer.Display.println(message);
 
   // Delay for visibility
-  delay(2000);
+  delay(800);
 }
 
 // Function to save configuration parameters to the SD card
@@ -710,8 +765,7 @@ void saveConfig() {
 
 // Function to connect to Wi-Fi
 void connectToWiFi() {
-
-  M5Cardputer.Display.fillScreen(BLACK);
+M5Cardputer.Display.pushImage(0, 0, 240, 135, wifi_img);
   M5Cardputer.Display.setTextColor(YELLOW);
   M5Cardputer.Display.setCursor(0, 0);
   M5Cardputer.Display.println("Connecting to Wi-Fi...");
@@ -726,16 +780,19 @@ void connectToWiFi() {
     attempts++;
 
     if (attempts >= maxAttempts) {
-
+M5Cardputer.Display.setCursor(0, 0);
       M5Cardputer.Display.setTextColor(RED);
-
+M5Cardputer.Display.pushImage(0, 0, 240, 135, error);
       M5Cardputer.Display.println("\nFailed to connect to Wi-Fi, switching to menu...");
       delay(2000);
       M5Cardputer.Display.fillScreen(BLACK);
       Menu = true;
       ConfigMenu();
-      M5Cardputer.Display.fillScreen(BLACK);
+      M5Cardputer.Display.setCursor(0, 0);
+      M5Cardputer.Display.pushImage(0, 0, 240, 135, bg);
+  
       M5Cardputer.Display.setTextColor(RED);
+
       M5Cardputer.Display.println("\nRestarting...");
       delay(2000);
       ESP.restart();
@@ -756,19 +813,47 @@ void setup() {
   // Set display rotation and text size
   M5Cardputer.Display.setRotation(1);
   M5Cardputer.Display.pushImage(0, 0, 240, 135, remixed); // Render the image at the origin (0, 0)
-    delay(2000);
+    delay(800);
   M5Cardputer.Display.setTextSize(0.9);
   M5Cardputer.Display.fillScreen(BLACK);
   M5Cardputer.Display.setTextFont(&fonts::FreeMono9pt7b);
 
   M5Cardputer.Display.pushImage(0, 0, 240, 135, sd_img);
-  delay(2000);
+  delay(800);
   // Initialize the SD card
   if (initializeSDCard()) {
-    printDebug("Setup completed.");
+    // Clear the canvas screen to display the message clearly
+    M5Cardputer.Display.pushImage(0, 0, 240, 135, sd_img);
+
+  // Set the cursor position to the top-left corner
+  M5Cardputer.Display.setCursor(0, 0);
+
+  // Set the text color to white for visibility
+  M5Cardputer.Display.setTextColor(WHITE);
+
+  // Print the provided debug message
+  M5Cardputer.Display.println("Setup completed.");
+
+  // Delay for visibility
+  delay(800);
+    
     loadConfig();
   } else {
-    printDebug("Setup failed.");
+    // Clear the canvas screen to display the message clearly
+  M5Cardputer.Display.pushImage(0, 0, 240, 135, error);
+
+  // Set the cursor position to the top-left corner
+  M5Cardputer.Display.setCursor(0, 0);
+
+  // Set the text color to white for visibility
+  M5Cardputer.Display.setTextColor(WHITE);
+
+  // Print the provided debug message
+  M5Cardputer.Display.println("Setup failed.");
+
+  // Delay for visibility
+  delay(800);
+   
     M5Cardputer.Display.fillScreen(BLACK);
     Menu = true;
     ConfigMenu();
@@ -945,11 +1030,16 @@ bool sendGeminiRequest(const String &input) {
     return true;  // Request succeeded
   } else {
     // Display an HTTP error
+
+     M5Cardputer.Display.setTextSize(0.9);
+  M5Cardputer.Display.setTextFont(&fonts::FreeMono9pt7b);
     M5Cardputer.Display.setCursor(0, 0);
     M5Cardputer.Display.fillScreen(BLACK);
     M5Cardputer.Display.setTextColor(RED);
     M5Cardputer.Display.println("\nHTTP error: " + String(httpResponseCode));
     M5Cardputer.Display.println("Error: " + http.errorToString(httpResponseCode));
+    displayText("> ", scrollPositionDOWN, 0, true);
+    
 
 
     // End the HTTP connection
