@@ -50,5 +50,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Author
 
 - **@vanshksingh**: [GitHub](https://github.com/vanshksingh)
-
-Feel free to adjust the README to better suit your project and needs.
