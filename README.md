@@ -15,29 +15,15 @@ An application that uses M5Cardputer to interact with the Gemini API for generat
 - **Wi-Fi Connectivity**: Connects to the specified Wi-Fi network for API communication.
 - **Configuration**: Reads configuration data such as Wi-Fi credentials and API key from an SD card.
 
-## Installation
+## In-Development 
 
-To use this project, follow the steps below:
+1. Re-integrate Fastled implementation
+2. Clean code 
+3. Add a splash with Key combo and what they do 
+4. Remove Print Debug function
 
-1. Clone this repository:
 
-    ```shell
-    git clone https://github.com/vanshksingh/m5cardputer-chat-gemini-api.git
-    ```
 
-2. Navigate to the cloned repository:
-
-    ```shell
-    cd m5cardputer-chat-gemini-api
-    ```
-
-3. Open the project in your preferred IDE or text editor.
-
-4. Upload the project to your M5Cardputer device.
-
-5. Make sure you have the necessary libraries installed (e.g., M5GFX, WiFi, HTTPClient, ArduinoJson, SD).
-
-6. Prepare a configuration file (`config.txt`) on an SD card with your Wi-Fi SSID, password, and API key, and insert the card into your M5Cardputer.
 
 ## Usage
 
