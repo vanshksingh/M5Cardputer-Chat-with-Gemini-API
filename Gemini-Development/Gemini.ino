@@ -814,9 +814,19 @@ void setup() {
   M5Cardputer.Display.setRotation(1);
   M5Cardputer.Display.pushImage(0, 0, 240, 135, remixed); // Render the image at the origin (0, 0)
     delay(800);
+
+
   M5Cardputer.Display.setTextSize(0.9);
-  M5Cardputer.Display.fillScreen(BLACK);
   M5Cardputer.Display.setTextFont(&fonts::FreeMono9pt7b);
+
+  M5Cardputer.Display.pushImage(0, 0, 240, 135, bg);
+  M5Cardputer.Display.setCursor(0, 0);
+  M5Cardputer.Display.setTextColor(ORANGE);
+  M5Cardputer.Display.println("Keys:");
+  M5Cardputer.Display.println("UP = Fn + ;");
+  M5Cardputer.Display.println("DOWN = Fn + .");
+  M5Cardputer.Display.println("Menu = Opt");
+  delay(2000);
 
   M5Cardputer.Display.pushImage(0, 0, 240, 135, sd_img);
   delay(800);
