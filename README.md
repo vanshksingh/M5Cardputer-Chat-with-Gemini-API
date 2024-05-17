@@ -15,23 +15,29 @@ An application that uses M5Cardputer to interact with the Gemini API for generat
 - **Wi-Fi Connectivity**: Connects to the specified Wi-Fi network for API communication.
 - **Configuration**: Reads configuration data such as Wi-Fi credentials and API key from an SD card.
 
+## Usage
+1. Insert SD Card
+
+2. Follow On-screen instructions.
+
+3. Get API key From https://aistudio.google.com/app/apikey
+
+4. Type your queries using the M5Cardputer keyboard, and the application will send them to the Gemini API.
+
+5. The responses from the Gemini API will be displayed on the M5Cardputer screen.
+
+
 ## In-Development 
 
 1. Re-integrate Fastled implementation
 2. Clean code 
-3. Add a splash with Key combo and what they do 
-4. Remove Print Debug function
+3. Remove Print Debug function
 
 
+## Create .bin 
+https://www.reddit.com/r/CardPuter/comments/1aoka55/finally_i_manage_to_compile_m5nemo_from_source/
 
 
-## Usage
-
-1. Once the application is running on your M5Cardputer, follow the on-screen instructions to begin using the chat functionality.
-
-2. Type your queries using the M5Cardputer keyboard, and the application will send them to the Gemini API.
-
-3. The responses from the Gemini API will be displayed on the M5Cardputer screen.
 
 ## Contributing
 
