@@ -32,6 +32,8 @@ An application that uses M5Cardputer to interact with the Gemini API for generat
 1. Re-integrate Fastled implementation
 2. Clean code 
 3. Remove Print Debug function
+4. Save Response to SD card 
+
 
 
 ## Create .bin 
