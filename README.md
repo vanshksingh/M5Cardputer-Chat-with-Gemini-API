@@ -33,6 +33,11 @@ An application that uses M5Cardputer to interact with the Gemini API for generat
 2. Clean code 
 3. Remove Print Debug function
 4. Save Response to SD card 
+5. Voice to text input
+6. Text to voice
+7. Button to switch voice modes
+
+
 
 
 
